@@ -134,7 +134,16 @@ func (c *cache) Get(k string) (interface{}, bool) {
 	c.mu.RUnlock()
 	return item.Object, true
 }
-
+// Get all cache keys
+func (c *Cache) Keys(key string) []string {
+	c.RLock()
+	defer c.RUnlock()
+	keys := make([]string, len(c.items))
+	for k := range c.items {
+		keys = append(keys, k)
+	}
+	return keys
+}
 func (c *cache) get(k string) (interface{}, bool) {
 	item, found := c.items[k]
 	if !found {
